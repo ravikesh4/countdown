@@ -55,7 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   DateTime selectedDate = DateTime.now();
   var differenceInDays = 0;
-  String formattedDate = DateFormat('kk:mm:ss').format(DateTime.now());
+  String formattedDate = DateFormat('kk:mm:ss ').format(DateTime.now());
+  DateTime dateTimeNow = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -63,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
         initialDate: selectedDate,
         firstDate: DateTime.now(),
         lastDate: DateTime(2101));
-    DateTime dateTimeNow = DateTime.now();
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -185,33 +185,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: _selectTime,
-              child: Text('SELECT TIME'),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Selected time: ${_time.format(context)}',
-            ),
             Text("${selectedDate.toLocal()}".split(' ')[0]),
-            SizedBox(
-              height: 20.0,
-            ),
-            RaisedButton(
-              onPressed: () => _selectDate(context),
-              child: Text('Select date'),
-            ),
             RaisedButton(
               onPressed: () {
                 DatePicker.showDateTimePicker(context, showTitleActions: true,
-                onChanged: (date) {
-                print('change $date in time zone ' +
-                date.timeZoneOffset.inHours.toString());
+                    onChanged: (date) {
+                  print('change $date in time zone ' +
+                      date.timeZoneOffset.inHours.toString());
                 }, onConfirm: (date) {
-                print('confirm $date');
-                },
-                currentTime: DateTime.now(),
-                locale: LocaleType.en);
+                  print('confirm $date');
+                  _counter = date.difference(dateTimeNow).inSeconds;
+                  _startTimer();
+                }, currentTime: DateTime.now(), locale: LocaleType.en);
               },
               child: Text('Select date and time'),
             ),
