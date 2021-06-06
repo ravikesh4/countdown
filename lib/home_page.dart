@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        formattedDate = DateFormat('kk:mm').format(DateTime.now());
+        formattedDate = DateFormat('kk:mm:ss').format(DateTime.now());
       });
     });
   }
