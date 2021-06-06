@@ -13,65 +13,36 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: CountDownTimerPage(),
+      home: Homepage(),
     );
   }
 }
 
-class MainPage extends StatelessWidget {
+class Homepage extends StatefulWidget {
+  const Homepage({Key key}) : super(key: key);
+
+  @override
+  _HomepageState createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  bool hasTimerStopped = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Plugin example app'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.pinkAccent,
-                  padding: const EdgeInsets.all(4),
-                  shape: const StadiumBorder(),
-                ),
-                onPressed: () {
-                  CountUpTimerPage.navigatorPush(context);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Go To CountUpTimer',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.pinkAccent,
-                  padding: const EdgeInsets.all(4),
-                  shape: const StadiumBorder(),
-                ),
-                onPressed: () {
-                  CountDownTimerPage.navigatorPush(context);
-                },
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Go To CountDownTimer',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+    return  Container(
+      width: 60.0,
+      padding: EdgeInsets.only(top: 3.0, right: 4.0),
+      child: CountDownTimer(
+        secondsRemaining: 3620,
+        whenTimeExpires: () {
+          setState(() {
+            hasTimerStopped = true;
+          });
+        },
+        countDownTimerStyle: TextStyle(
+            color: Color(0XFFf5a623),
+            fontSize: 17.0,
+            height: 1.2),
       ),
     );
   }
