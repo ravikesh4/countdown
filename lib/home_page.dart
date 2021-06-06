@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -21,10 +22,11 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-          formattedDate = DateFormat('kk:mm').format(DateTime.now());
+        formattedDate = DateFormat('kk:mm').format(DateTime.now());
       });
     });
   }
+
   void _startTimer() {
     _counter = _counter;
     if (_timer != null) {
@@ -51,7 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-
   DateTime selectedDate = DateTime.now();
   var differenceInDays = 0;
   String formattedDate = DateFormat('kk:mm:ss').format(DateTime.now());
@@ -66,9 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
-        _counter = selectedDate
-            .difference(dateTimeNow)
-            .inSeconds;
+        _counter = selectedDate.difference(dateTimeNow).inSeconds;
       });
   }
 
@@ -97,7 +96,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   TimeOfDay _time = TimeOfDay(hour: 7, minute: 15);
-  DateTime selectedTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime selectedTime =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   void _selectTime() async {
     final TimeOfDay newTime = await showTimePicker(
@@ -115,7 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
-  bool _switchValue=false;
+
+  bool _switchValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -132,15 +133,15 @@ class _MyHomePageState extends State<MyHomePage> {
               onChanged: (value) {
                 setState(() {
                   _switchValue = value;
-                  if(_switchValue == true) {
-                    _counter = DateTime.now().add(Duration(minutes: 20))
+                  if (_switchValue == true) {
+                    _counter = DateTime.now()
+                        .add(Duration(minutes: 20))
                         .difference(DateTime.now())
                         .inSeconds;
                     _startTimer();
                   } else {
                     _counter = 0;
                   }
-
                 });
               },
             ),
@@ -154,20 +155,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-
-
-
-
             (_counter > 0)
                 ? Text("")
                 : Text(
-              "DONE!",
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+                    "DONE!",
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
@@ -188,7 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-
             ElevatedButton(
               onPressed: _selectTime,
               child: Text('SELECT TIME'),
@@ -205,10 +201,25 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () => _selectDate(context),
               child: Text('Select date'),
             ),
-
+            RaisedButton(
+              onPressed: () {
+                DatePicker.showDateTimePicker(context, showTitleActions: true,
+                onChanged: (date) {
+                print('change $date in time zone ' +
+                date.timeZoneOffset.inHours.toString());
+                }, onConfirm: (date) {
+                print('confirm $date');
+                },
+                currentTime: DateTime.now(),
+                locale: LocaleType.en);
+              },
+              child: Text('Select date and time'),
+            ),
             RaisedButton(
               onPressed: () => _startTimer(),
-              child: Text("Start",),
+              child: Text(
+                "Start",
+              ),
               color: Colors.blue,
             ),
             RaisedButton(
